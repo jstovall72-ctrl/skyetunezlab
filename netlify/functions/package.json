@@ -1,16 +1,7 @@
 {
-  "name": "skyetunezlab",
+  "name": "skyetunezlab-functions",
   "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "dev": "netlify dev",
-    "build": "npm run build --workspace=client",
-    "install:all": "npm install && npm install --prefix client"
-  },
-  "workspaces": ["client"],
-  "devDependencies": {
-    "netlify-cli": "^17.0.0"
-  },
+  "type": "module",
   "dependencies": {
     "googleapis": "^144.0.0"
   }
