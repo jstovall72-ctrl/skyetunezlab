@@ -1,0 +1,84 @@
+.app {
+  width: min(1440px, 96vw);
+  margin: 28px auto;
+  display: grid;
+  grid-template-columns: 270px 1fr 340px;
+  gap: 22px;
+}
+
+.main { display: flex; flex-direction: column; gap: 22px; }
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius);
+  gap: 12px;
+}
+.search {
+  flex: 1;
+  max-width: 45%;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 16px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.topActions { display: flex; align-items: center; gap: 10px; }
+.pill {
+  border: 1px solid rgba(255,255,255,0.18);
+  background: linear-gradient(135deg, rgba(155,92,255,0.3), rgba(64,224,255,0.15));
+  color: var(--text);
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+}
+.primaryBtn {
+  border: none;
+  background: linear-gradient(135deg, var(--purple), var(--cyan));
+  color: white;
+  padding: 11px 20px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(64,224,255,0.2);
+  transition: opacity 0.15s;
+}
+.primaryBtn:hover { opacity: 0.9; }
+
+.sectionGrid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 22px;
+}
+
+.panel {
+  padding: 22px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius);
+}
+.panelHeading { margin: 0 0 16px; font-size: 19px; letter-spacing: -0.03em; }
+
+.right { display: flex; flex-direction: column; gap: 22px; }
+
+@media (max-width: 1160px) {
+  .app { grid-template-columns: 1fr; }
+  .right { display: grid; grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 760px) {
+  .sectionGrid { grid-template-columns: 1fr; }
+  .topbar { flex-direction: column; align-items: stretch; }
+  .search { max-width: 100%; }
+  .right { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,84 @@
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius);
+  padding: 22px;
+}
+.heading { margin: 0 0 16px; font-size: 19px; letter-spacing: -0.03em; }
+
+.exportBox {
+  padding: 16px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(255,79,216,0.15), rgba(64,224,255,0.10));
+  border: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 14px;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 9px 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+.row:last-child { border-bottom: none; }
+.row strong { color: var(--text); }
+
+.primary {
+  width: 100%;
+  border: none;
+  background: linear-gradient(135deg, var(--purple), var(--cyan));
+  color: white;
+  padding: 14px;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 12px 34px rgba(64,224,255,0.22);
+  transition: opacity 0.15s;
+}
+.primary:hover { opacity: 0.9; }
+
+.recentCard {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.055);
+  border: 1px solid rgba(255,255,255,0.09);
+  margin-bottom: 10px;
+}
+.recentName { display: block; font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+.recentMeta { color: var(--muted); font-size: 12px; }
+
+.promptBox {
+  width: 100%;
+  min-height: 100px;
+  padding: 13px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.055);
+  border: 1px solid rgba(255,255,255,0.09);
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  font-family: inherit;
+  resize: none;
+  outline: none;
+  transition: border-color 0.15s;
+  margin-bottom: 12px;
+}
+.promptBox:focus { border-color: rgba(155,92,255,0.4); color: var(--text); }
+
+.secondaryBtn {
+  width: 100%;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.07);
+  color: var(--text);
+  padding: 13px;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.secondaryBtn:hover { background: rgba(255,255,255,0.12); }

@@ -1,0 +1,14 @@
+{
+  "name": "skyetunezlab",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "npm run build --workspace=client",
+    "install:all": "npm install && npm install --prefix client && npm install --prefix netlify/functions"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  },
+  "workspaces": ["client"]
+}

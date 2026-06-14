@@ -1,0 +1,35 @@
+.loading { color: var(--muted); font-size: 13px; margin-bottom: 12px; }
+
+.card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.055);
+  border: 1px solid rgba(255,255,255,0.09);
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.card:hover { background: rgba(255,255,255,0.09); border-color: rgba(155,92,255,0.3); }
+.selected {
+  background: linear-gradient(135deg, rgba(155,92,255,0.2), rgba(64,224,255,0.1));
+  border-color: rgba(155,92,255,0.5);
+}
+.name { display: block; font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.desc { color: var(--muted); font-size: 12px; }
+
+.tag {
+  font-size: 11px;
+  font-weight: 900;
+  padding: 3px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+.hot { color: var(--danger); background: rgba(255,93,118,0.12); border: 1px solid rgba(255,93,118,0.25); }
+.new { color: var(--green);  background: rgba(85,255,170,0.10); border: 1px solid rgba(85,255,170,0.20); }
+.ai  { color: var(--cyan);   background: rgba(64,224,255,0.10); border: 1px solid rgba(64,224,255,0.20); }
