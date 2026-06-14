@@ -1,13 +1,55 @@
-import { useMemo } from "react";
-import { SCALES, ROOTS, PROGRESSIONS, GENRES, getPianoRollNotes } from "../lib/midiEngine.js";
+import { useMemo, useState, useEffect, useRef } from "react";
+import { SCALES, ROOTS, PROGRESSIONS, GENRES, getPianoRollNotes, buildTracks } from "../lib/midiEngine.js";
+import { playPreview, stopPreview, getIsPlaying } from "../lib/audioEngine.js";
 import styles from "./HeroPanel.module.css";
 
 const SCALE_KEYS = Object.keys(SCALES);
 const PROG_KEYS  = Object.keys(PROGRESSIONS);
 
-export default function HeroPanel({ settings, trackStates, update, onGenerate, onRandomize, onPreview, onSave }) {
+export default function HeroPanel({ settings, trackStates, update, onGenerate, onRandomize, onSave }) {
+  const [playing, setPlaying]   = useState(false);
+  const [progress, setProgress] = useState(0);
+  const progressRef = useRef(null);
+  const durationRef = useRef(0);
+  const startRef    = useRef(0);
+
+  const pianoNotes = useMemo(() => getPianoRollNotes(settings, trackStates), [settings, trackStates]);
   const waveHeights = useMemo(() => Array.from({ length: 16 }, () => 20 + Math.random() * 75), [settings.bpm, settings.key]);
-  const pianoNotes  = useMemo(() => getPianoRollNotes(settings, trackStates), [settings, trackStates]);
+
+  // Stop playback if settings change
+  useEffect(() => {
+    if (playing) handleStop();
+  }, [settings, trackStates]);
+
+  function handleStop() {
+    stopPreview();
+    setPlaying(false);
+    setProgress(0);
+    clearInterval(progressRef.current);
+  }
+
+  function handlePreview() {
+    if (playing) { handleStop(); return; }
+
+    const tracks = buildTracks(settings, trackStates);
+    const totalSec = playPreview(tracks, settings.bpm, () => {
+      setPlaying(false);
+      setProgress(0);
+      clearInterval(progressRef.current);
+    });
+
+    setPlaying(true);
+    setProgress(0);
+    durationRef.current = totalSec;
+    startRef.current = performance.now();
+
+    progressRef.current = setInterval(() => {
+      const elapsed = (performance.now() - startRef.current) / 1000;
+      const pct = Math.min(1, elapsed / durationRef.current);
+      setProgress(pct);
+      if (pct >= 1) clearInterval(progressRef.current);
+    }, 50);
+  }
 
   return (
     <section className={styles.hero}>
@@ -19,7 +61,12 @@ export default function HeroPanel({ settings, trackStates, update, onGenerate, o
         <div className={styles.actions}>
           <button className={styles.primary} onClick={onGenerate}>⚡ Generate MIDI</button>
           <button className={styles.btn} onClick={onRandomize}>🎲 Randomize</button>
-          <button className={styles.btn} onClick={onPreview}>▶ Preview</button>
+          <button
+            className={`${styles.btn} ${playing ? styles.btnActive : ""}`}
+            onClick={handlePreview}
+          >
+            {playing ? "⏹ Stop" : "▶ Preview"}
+          </button>
           <button className={styles.btn} onClick={onSave}>💾 Save Preset</button>
         </div>
 
@@ -67,20 +114,48 @@ export default function HeroPanel({ settings, trackStates, update, onGenerate, o
       </div>
 
       <div className={styles.visualizer}>
-        <div className={styles.kicker}>Live MIDI Preview</div>
+        <div className={styles.vizHeader}>
+          <div className={styles.kicker}>Live MIDI Preview</div>
+          {playing && (
+            <div className={styles.playingBadge}>
+              <span className={styles.dot} />
+              Playing
+            </div>
+          )}
+        </div>
+
+        {/* Progress bar */}
+        <div className={styles.progressTrack}>
+          <div className={styles.progressFill} style={{ width: `${progress * 100}%` }} />
+        </div>
+
+        {/* Waveform — bars animate when playing */}
         <div className={styles.wave}>
           {waveHeights.map((h, i) => (
-            <div key={i} className={styles.bar} style={{ height: `${h}%` }} />
+            <div
+              key={i}
+              className={`${styles.bar} ${playing ? styles.barPlaying : ""}`}
+              style={{
+                height: `${h}%`,
+                animationDelay: playing ? `${(i * 0.06).toFixed(2)}s` : "0s",
+              }}
+            />
           ))}
         </div>
+
+        {/* Piano roll */}
         <div className={styles.pianoRoll}>
           {pianoNotes.map((n, i) => (
             <div
               key={i}
-              className={`${styles.note} ${n.type === "chord" ? styles.chordNote : styles.bassNote}`}
+              className={`${styles.note} ${n.type === "chord" ? styles.chordNote : styles.bassNote} ${playing ? styles.notePlaying : ""}`}
               style={{ left: `${n.left}%`, top: `${n.top}%`, width: `${n.width}%` }}
             />
           ))}
+          {/* Playhead */}
+          {playing && (
+            <div className={styles.playhead} style={{ left: `${progress * 100}%` }} />
+          )}
         </div>
       </div>
     </section>
